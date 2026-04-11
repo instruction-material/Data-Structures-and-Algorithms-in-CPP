@@ -1,0 +1,14 @@
+# DSCPP1 Interfaces, Records, and a Task Manager CLI supplemental 2
+
+Course: Data Structures and Algorithms in C++
+Module: DSCPP1 Interfaces, Records, and a Task Manager CLI supplemental 2
+
+Use the starter folder first. The starter is intentionally incomplete, and the solution shows one clean way to finish the same build after the student has worked through it.
+
+Suggested flow:
+- Read the module brief and identify the core requirement.
+- Complete the TODO markers in the starter implementation.
+- Test at least one custom case beyond the default example.
+- Compare against the solution only after the student has a working draft.
+
+Quick run hint: `c++ -std=c++17 main.cpp -o app && ./app`

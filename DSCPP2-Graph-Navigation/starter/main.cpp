@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <sstream>
@@ -101,4 +102,3 @@ int main() {
 	}
 	std::cout << "\n";
 }
-

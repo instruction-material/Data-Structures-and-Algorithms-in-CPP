@@ -7,6 +7,10 @@
 #include <string>
 #include <vector>
 
+/****************
+*   SOLUTION   *
+****************/
+
 class GraphNavigator {
 public:
 	bool readNetwork(std::istream& input) {

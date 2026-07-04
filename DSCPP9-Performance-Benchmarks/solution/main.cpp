@@ -6,6 +6,10 @@
 #include <unordered_set>
 #include <vector>
 
+/****************
+*   SOLUTION   *
+****************/
+
 template <typename Callback>
 long long timeRun(Callback callback) {
 	const auto start = std::chrono::steady_clock::now();

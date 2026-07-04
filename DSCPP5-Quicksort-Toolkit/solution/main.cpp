@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+/****************
+*   SOLUTION   *
+****************/
+
 class QuickSortToolkit {
 public:
 	void add(int value) {

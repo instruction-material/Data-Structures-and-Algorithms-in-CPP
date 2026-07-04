@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+/****************
+*   SOLUTION   *
+****************/
+
 class Pathfinder {
 public:
 	bool importMaze(std::istream& input) {

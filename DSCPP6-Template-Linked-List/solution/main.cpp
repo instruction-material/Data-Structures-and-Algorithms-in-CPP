@@ -3,6 +3,10 @@
 #include <stdexcept>
 #include <string>
 
+/****************
+*   SOLUTION   *
+****************/
+
 template <typename T>
 class SinglyLinkedList {
 public:

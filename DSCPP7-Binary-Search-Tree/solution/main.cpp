@@ -3,6 +3,10 @@
 #include <sstream>
 #include <string>
 
+/****************
+*   SOLUTION   *
+****************/
+
 class BinarySearchTree {
 public:
 	~BinarySearchTree() {

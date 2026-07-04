@@ -3,6 +3,10 @@
 #include <string>
 #include <vector>
 
+/****************
+*   SOLUTION   *
+****************/
+
 struct Task {
 	std::string dueDate;
 	std::string description;

@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 
+/****************
+*   SOLUTION   *
+****************/
+
 using State = std::deque<std::string>;
 
 std::string cleanToken(const std::string& raw) {

@@ -4,6 +4,10 @@
 #include <sstream>
 #include <string>
 
+/****************
+*   SOLUTION   *
+****************/
+
 class AvlTree {
 public:
 	~AvlTree() {

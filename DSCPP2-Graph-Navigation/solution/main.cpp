@@ -1,9 +1,11 @@
 #include <algorithm>
+#include <cstdint>
 #include <functional>
 #include <iostream>
 #include <limits>
 #include <queue>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -13,21 +15,33 @@
 
 class GraphNavigator {
   public:
+    using Cost = std::int64_t; // CHANGED: distances can exceed int.
+    static constexpr std::size_t maxNodes = 256;
+    static_assert(std::numeric_limits<Cost>::max() / maxNodes >=
+                  std::numeric_limits<int>::max());
+
+    // CHANGED: validate a bounded candidate before replacing the loaded graph.
     bool readNetwork(std::istream& input) {
-        int nodeCount = 0;
-        if (!(input >> nodeCount) || nodeCount <= 0) {
+        long long nodeCount = 0;
+        if (!(input >> nodeCount) || nodeCount <= 0 ||
+            nodeCount > static_cast<long long>(maxNodes)) {
             return false;
         }
 
-        matrix.assign(nodeCount, std::vector<int>(nodeCount, -1));
-        for (int row = 0; row < nodeCount; ++row) {
-            for (int col = 0; col < nodeCount; ++col) {
-                if (!(input >> matrix[row][col])) {
-                    matrix.clear();
+        const auto count = static_cast<std::size_t>(nodeCount);
+        std::vector<std::vector<int>> candidate(count, std::vector<int>(count));
+        for (auto& row : candidate) {
+            for (auto& weight : row) {
+                if (!(input >> weight) || weight < -1) {
                     return false;
                 }
             }
         }
+        input >> std::ws;
+        if (input.bad() || !input.eof()) {
+            return false;
+        }
+        matrix.swap(candidate);
         return true;
     }
 
@@ -38,21 +52,22 @@ class GraphNavigator {
             return {};
         }
 
-        const int infinity = std::numeric_limits<int>::max() / 4;
-        std::vector<int> distance(matrix.size(), infinity);
+        const Cost infinity = std::numeric_limits<Cost>::max();
+        std::vector<Cost> distance(matrix.size(), infinity);
         std::vector<int> parent(matrix.size(), -1);
-        using QueueItem = std::pair<int, int>;
+        using QueueItem = std::pair<Cost, int>;
         std::priority_queue<QueueItem, std::vector<QueueItem>, std::greater<>>
             frontier;
 
-        distance[start] = 0;
+        distance[static_cast<std::size_t>(start)] = 0;
         frontier.push({0, start});
 
         while (!frontier.empty()) {
             const auto [cost, node] = frontier.top();
             frontier.pop();
 
-            if (cost != distance[node]) {
+            const auto nodeIndex = static_cast<std::size_t>(node);
+            if (cost != distance[nodeIndex]) {
                 continue;
             }
             if (node == goal) {
@@ -61,12 +76,12 @@ class GraphNavigator {
 
             for (std::size_t neighbor = 0; neighbor < matrix.size();
                  ++neighbor) {
-                const int weight = matrix[node][neighbor];
+                const int weight = matrix[nodeIndex][neighbor];
                 if (weight < 0) {
                     continue;
                 }
 
-                const int nextCost = cost + weight;
+                const Cost nextCost = cost + weight;
                 if (nextCost < distance[neighbor]) {
                     distance[neighbor] = nextCost;
                     parent[neighbor] = node;
@@ -75,26 +90,36 @@ class GraphNavigator {
             }
         }
 
-        if (distance[goal] == infinity) {
+        if (distance[static_cast<std::size_t>(goal)] == infinity) {
             return {};
         }
 
         std::vector<int> path;
-        for (int current = goal; current != -1; current = parent[current]) {
+        for (int current = goal; current != -1; current = parent[static_cast<std::size_t>(current)]) {
             path.push_back(current);
         }
         std::reverse(path.begin(), path.end());
         return path;
     }
 
-    int costOfPath(const std::vector<int>& path) const {
-        if (path.size() < 2) {
-            return 0;
+    // CHANGED: validate every path node/edge and keep large costs representable.
+    Cost costOfPath(const std::vector<int>& path) const {
+        for (int node : path) {
+            if (node < 0 || node >= static_cast<int>(matrix.size())) {
+                throw std::invalid_argument("Path contains an unknown node.");
+            }
         }
-
-        int total = 0;
+        Cost total = 0;
         for (std::size_t i = 1; i < path.size(); ++i) {
-            total += matrix[path[i - 1]][path[i]];
+            const int weight = matrix[static_cast<std::size_t>(path[i - 1])]
+                                     [static_cast<std::size_t>(path[i])];
+            if (weight < 0) {
+                throw std::invalid_argument("Path crosses an absent edge.");
+            }
+            if (total > std::numeric_limits<Cost>::max() - weight) {
+                throw std::overflow_error("Path cost is too large.");
+            }
+            total += weight;
         }
         return total;
     }
@@ -123,4 +148,5 @@ int main() {
         std::cout << ' ' << node;
     }
     std::cout << "\nCost: " << navigator.costOfPath(path) << "\n";
+    return 0;
 }

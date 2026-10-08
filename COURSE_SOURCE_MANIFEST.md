@@ -73,4 +73,14 @@ Canonical source repository: `Data-Structures-and-Algorithms-in-CPP`
 - Top-level folders: 51
 - Active linked folders: 51
 - Ledgered inactive/support folders: 0
-- Source-like files: 154
+- Source-like files: 162
+
+## DSCPP0 setup audit
+
+The setup core now supplies a three-file C++20 search/count/build lab per role.
+Its two linked supplemental folders contain optional transfer/debug worksheets;
+they assign no separate starter or reference code. Legacy role files remain
+byte-identical for older catalog links; current worksheet links open these READMEs. The setup gate
+is `python3 tests/verify-setup-search.py`, covering ordinary/sanitized builds,
+independent search oracles, malformed CLI input, unfinished starter tasks and
+project-local CMake/CTest. It does not certify other units.

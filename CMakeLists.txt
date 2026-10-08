@@ -10,6 +10,8 @@ function(add_course_binary target source)
 	target_compile_features(${target} PRIVATE cxx_std_20)
 endfunction()
 
+add_course_binary(dscpp0_starter "DSA-08-dscpp0-setup-and-positioning/starter/main.cpp")
+add_course_binary(dscpp0_solution "DSA-08-dscpp0-setup-and-positioning/solution/main.cpp")
 add_course_binary(dscpp1_starter "DSCPP1-Task-Manager-CLI/starter/main.cpp")
 add_course_binary(dscpp1_solution "DSCPP1-Task-Manager-CLI/solution/main.cpp")
 add_course_binary(dscpp2_starter "DSCPP2-Graph-Navigation/starter/main.cpp")

@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.20)
+project(DSCPP0SearchWork LANGUAGES CXX)
+add_executable(search_work main.cpp)
+target_compile_features(search_work PRIVATE cxx_std_20)
+set_target_properties(search_work PROPERTIES CXX_EXTENSIONS OFF)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(search_work PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+enable_testing()
+add_test(NAME default_search COMMAND search_work)
+set_tests_properties(default_search PROPERTIES PASS_REGULAR_EXPRESSION
+    "linear index=3 comparisons=4\nbinary index=3 comparisons=3")
+add_test(NAME empty_search COMMAND search_work 21)
+set_tests_properties(empty_search PROPERTIES PASS_REGULAR_EXPRESSION
+    "linear index=none comparisons=0\nbinary index=none comparisons=0")
+add_test(NAME duplicate_search COMMAND search_work 4 1 4 4 4 9)
+set_tests_properties(duplicate_search PROPERTIES PASS_REGULAR_EXPRESSION
+    "linear index=1 comparisons=2\nbinary index=1 comparisons=4")
+add_test(NAME reject_unsorted COMMAND search_work 4 9 1 4)
+set_tests_properties(reject_unsorted PROPERTIES WILL_FAIL TRUE)

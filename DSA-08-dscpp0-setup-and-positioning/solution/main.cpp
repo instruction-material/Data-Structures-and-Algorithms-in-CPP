@@ -1,47 +1,48 @@
+#include "search.hpp"
+#include <algorithm>
+#include <charconv>
 #include <iostream>
+#include <string_view>
 #include <vector>
 
-/*****************
-*   CONSTANTS   *
-*****************/
+namespace {
+constexpr std::size_t maxValues = 1024;
 
-constexpr int VALUE_MULTIPLIER = 2;
-constexpr int VALUE_OFFSET = 1;
-const std::vector<int> SAMPLE_VALUES{3, 8, 13, 21};
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-/**
- * @brief Transform each input value with the lesson formula
- *
- * @param values Values to transform
- *
- * @return Transformed values in the original order
- */
-std::vector<int> transform_values(const std::vector<int>& values) {
-    std::vector<int> transformed_values;
-    transformed_values.reserve(values.size());
-
-    // Transform each value independently so the output order matches the input order
-    for (int value : values) {
-        transformed_values.push_back(value * VALUE_MULTIPLIER + VALUE_OFFSET);
-    }
-
-    return transformed_values;
+bool parseInt(std::string_view text, int& value) {
+    const auto [end, error] = std::from_chars(text.data(), text.data() + text.size(), value);
+    return error == std::errc{} && end == text.data() + text.size();
 }
 
-/**
- * @brief Print the transformed sample values
- *
- * @return Program exit status
- */
-int main() {
-    // Print each transformed value on its own line
-    for (int value : transform_values(SAMPLE_VALUES)) {
-        std::cout << value << "\n";
-    }
+void printReport(std::string_view name, SearchReport result, std::size_t count) {
+    std::cout << name << " index=";
+    if (result.index == count) std::cout << "none";
+    else std::cout << result.index;
+    std::cout << " comparisons=" << result.comparisons << '\n';
+}
+}
 
-    return 0;
+int main(int argc, char* argv[]) {
+    int target = 21;
+    std::vector<int> values{3, 8, 13, 21};
+    if (argc > 1) {
+        if (static_cast<std::size_t>(argc - 2) > maxValues || !parseInt(argv[1], target)) {
+            std::cerr << "error: expected an int target and at most 1024 sorted int values\n";
+            return 2;
+        }
+        values.clear();
+        for (int argument = 2; argument < argc; ++argument) {
+            int value = 0;
+            if (!parseInt(argv[argument], value)) {
+                std::cerr << "error: each value must be a complete int token\n";
+                return 2;
+            }
+            values.push_back(value);
+        }
+        if (!std::is_sorted(values.begin(), values.end())) {
+            std::cerr << "error: values must be in nondecreasing order\n";
+            return 2;
+        }
+    }
+    printReport("linear", findFirstLinear(values, target), values.size());
+    printReport("binary", findFirstBinary(values, target), values.size());
 }

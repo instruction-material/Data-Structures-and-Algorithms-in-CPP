@@ -9,6 +9,10 @@
 
 template <typename T> class SinglyLinkedList {
   public:
+    SinglyLinkedList() = default; // ADDED: retain default construction.
+    SinglyLinkedList(const SinglyLinkedList&) = delete; // ADDED: one node owner.
+    SinglyLinkedList& operator=(const SinglyLinkedList&) = delete; // ADDED: no aliasing copy.
+
     ~SinglyLinkedList() {
         clear();
     }

@@ -10,6 +10,10 @@
 
 class AvlTree {
   public:
+    AvlTree() = default; // ADDED: retain default construction.
+    AvlTree(const AvlTree&) = delete; // ADDED: one node owner.
+    AvlTree& operator=(const AvlTree&) = delete; // ADDED: no aliasing copy.
+
     ~AvlTree() {
         clear(root);
     }

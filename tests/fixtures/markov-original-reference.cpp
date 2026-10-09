@@ -5,7 +5,6 @@
 #include <random>
 #include <set>
 #include <sstream>
-#include <stdexcept> // ADDED
 #include <string>
 #include <vector>
 
@@ -40,11 +39,8 @@ std::vector<std::string> tokenize(const std::string& text) {
 
 std::map<State, std::vector<std::string>>
 buildModel(const std::vector<std::string>& tokens, int order) {
-    if (order < 0) { // ADDED
-        throw std::invalid_argument("State-window order must be nonnegative"); // ADDED
-    } // ADDED
     std::map<State, std::vector<std::string>> model;
-    State state(static_cast<std::size_t>(order), ""); // CHANGED
+    State state(order, "");
     for (const auto& token : tokens) {
         model[state].push_back(token);
         state.push_back(token);
@@ -56,11 +52,8 @@ buildModel(const std::vector<std::string>& tokens, int order) {
 std::vector<std::string>
 generateText(const std::map<State, std::vector<std::string>>& model, int order,
              int outputLength) {
-    if (order < 0 || outputLength < 0) { // ADDED
-        throw std::invalid_argument("Order and output length must be nonnegative"); // ADDED
-    } // ADDED
     std::mt19937 rng(42);
-    State state(static_cast<std::size_t>(order), ""); // CHANGED
+    State state(order, "");
     std::vector<std::string> output;
 
     for (int i = 0; i < outputLength; ++i) {

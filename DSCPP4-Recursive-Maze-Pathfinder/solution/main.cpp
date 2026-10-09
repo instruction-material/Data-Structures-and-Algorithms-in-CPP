@@ -13,13 +13,14 @@ class Pathfinder {
     bool importMaze(std::istream& input) {
         std::vector<int> next;
         int cell = 0;
-        while (input >> cell) {
-            if (cell != 0 && cell != 1) {
+        for (std::size_t i = 0; i < maze.size(); ++i) { // CHANGED
+            if (!(input >> cell) || (cell != 0 && cell != 1)) { // CHANGED
                 return false;
             }
             next.push_back(cell);
         }
-        if (next.size() != maze.size()) {
+        input >> std::ws; // ADDED
+        if (!input.eof() || input.bad()) { // CHANGED
             return false;
         }
         std::copy(next.begin(), next.end(), maze.begin());

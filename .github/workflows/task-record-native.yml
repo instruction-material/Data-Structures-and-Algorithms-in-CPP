@@ -1,0 +1,27 @@
+name: Task record native acceptance
+
+on:
+  push:
+    branches: [main, "codex/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  records:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [g++, clang++]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Course source structure
+        run: ./verify-course-source.sh
+      - name: Ordinary and sanitized task records
+        run: python3 tests/verify-task-record-contract.py --compiler "${{ matrix.compiler }}"

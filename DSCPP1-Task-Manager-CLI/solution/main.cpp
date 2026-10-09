@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <utility> // ADDED
 
 /****************
 *   SOLUTION   *
@@ -20,11 +21,13 @@ class TodoList {
     }
 
     bool remove(const std::string& description) {
-        const auto before = tasks.size();
-        std::erase_if(tasks, [&](const Task& task) {
-            return task.description == description;
-        });
-        return before != tasks.size();
+        for (auto it = tasks.begin(); it != tasks.end(); ++it) { // CHANGED
+            if (it->description == description) { // CHANGED
+                tasks.erase(it); // CHANGED
+                return true; // CHANGED
+            } // CHANGED
+        } // CHANGED
+        return false; // CHANGED
     }
 
     void markDone(const std::string& description) {

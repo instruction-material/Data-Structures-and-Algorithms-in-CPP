@@ -1,14 +1,20 @@
-# DSCPP5 Quicksort and Partitioning supplemental 2
+# Quicksort Partition Transfer Worksheet
 
-Course: Data Structures and Algorithms in C++
-Module: DSCPP5 Quicksort and Partitioning supplemental 2
+Continue the saved **DSCPP5 Quicksort Toolkit** core project. Use its README
+and the same inclusive-range pivot/partition contract. This is optional practice,
+not another required starter program.
 
-Use the starter folder first. The starter is intentionally incomplete, and the solution shows one clean way to finish the same build after the student has worked through it.
+1. Partition `[4, 1, 4, -2, 4]` around the value at index 2. Predict the pivot's
+   returned index and the two regions before executing the code. Equal values
+   belong on the greater-or-equal side; the regions need not be sorted.
+2. Partition only indices 1 through 4 of `[99, 4, 1, 4, -2, 88]`, with pivot
+   index 3. Explain why 99 and 88 must remain untouched.
+3. Verify empty input through `sortAll`, then one- and two-item inputs. State the
+   supplied tiny-range pivot rule rather than inventing a third sample entry.
+4. Use a separately sorted copy and value counts to check final sorting, then
+   inspect partition boundaries independently. Record any failed expectation.
 
-Suggested flow:
-- Read the module brief and identify the core requirement.
-- Complete the TODO markers in the starter implementation.
-- Test at least one custom case beyond the default example.
-- Compare against the solution only after the student has a working draft.
-
-Quick run hint: `c++ -std=c++17 main.cpp -o app && ./app`
+The historical `starter/main.cpp` and `solution/main.cpp` in this folder are
+retained for earlier links and saved imports. Their vector transformation is
+unrelated to quicksort and is not the assignment for this worksheet. Continue
+or export the saved core project instead of replacing it with these files.

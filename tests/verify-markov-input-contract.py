@@ -3,6 +3,7 @@
 from pathlib import Path
 import argparse
 import json
+import hashlib
 import os
 import platform
 import signal
@@ -90,7 +91,9 @@ with tempfile.TemporaryDirectory(prefix="dsa-markov-contract-") as temporary:
                 assert output == run([str(demonstration)], env=environment)
                 assert output.count('\n') == 3
                 baseline = work / "original-reference.cpp"
-                baseline.write_bytes(subprocess.check_output(['git','show','1f9c14d8a13072688324e8f97c339d02115ece1a:DSCPP3-Markov-Text-Generator/solution/main.cpp'],cwd=root))
+                baseline_bytes = (root/'tests/fixtures/markov-original-reference.cpp').read_bytes()
+                assert hashlib.sha256(baseline_bytes.replace(b'\r\n', b'\n')).hexdigest() == '416a5f1d81f2a728401a3ac2f297ccd911b190a6e9abe82ef53c9dc8159ad83a'
+                baseline.write_bytes(baseline_bytes)
                 original_demo = work / "original-reference-demo"
                 baseline_flags = flags
                 run([args.compiler,*baseline_flags,*mode_flags,str(baseline),'-o',str(original_demo)])

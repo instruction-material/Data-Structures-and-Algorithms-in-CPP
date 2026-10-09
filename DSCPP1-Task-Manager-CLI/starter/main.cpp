@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <utility> // ADDED
 
 struct Task {
     std::string dueDate;
@@ -47,6 +48,7 @@ class TodoList {
     }
 
     void printAll(std::ostream& out) const {
+        // TODO: print a sorted copy by date, completion and description. // ADDED
         out << "Task List\n";
         out << "---------\n";
         for (const auto& task : tasks) {

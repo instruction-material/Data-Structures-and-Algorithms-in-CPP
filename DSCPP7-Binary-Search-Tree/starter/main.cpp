@@ -5,6 +5,10 @@
 
 class BinarySearchTree {
   public:
+    BinarySearchTree() = default; // ADDED: retain default construction.
+    BinarySearchTree(const BinarySearchTree&) = delete; // ADDED: one node owner.
+    BinarySearchTree& operator=(const BinarySearchTree&) = delete; // ADDED: no aliasing copy.
+
     ~BinarySearchTree() {
         clear(root);
     }

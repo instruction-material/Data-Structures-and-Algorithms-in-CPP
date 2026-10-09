@@ -6,6 +6,10 @@
 
 class AvlTreeStarter {
   public:
+    AvlTreeStarter() = default; // ADDED: retain default construction.
+    AvlTreeStarter(const AvlTreeStarter&) = delete; // ADDED: one node owner.
+    AvlTreeStarter& operator=(const AvlTreeStarter&) = delete; // ADDED: no aliasing copy.
+
     ~AvlTreeStarter() {
         clear(root);
     }

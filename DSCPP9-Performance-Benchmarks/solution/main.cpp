@@ -20,6 +20,10 @@ template <typename Callback> long long timeRun(Callback callback) {
 
 class LinkedListSet {
   public:
+    LinkedListSet() = default; // ADDED: retain default construction.
+    LinkedListSet(const LinkedListSet&) = delete; // ADDED: one node owner.
+    LinkedListSet& operator=(const LinkedListSet&) = delete; // ADDED: no aliasing copy.
+
     ~LinkedListSet() {
         clear();
     }
@@ -60,6 +64,10 @@ class LinkedListSet {
 
 class BinarySearchTreeSet {
   public:
+    BinarySearchTreeSet() = default; // ADDED: retain default construction.
+    BinarySearchTreeSet(const BinarySearchTreeSet&) = delete; // ADDED: one node owner.
+    BinarySearchTreeSet& operator=(const BinarySearchTreeSet&) = delete; // ADDED: no aliasing copy.
+
     ~BinarySearchTreeSet() {
         clear(root);
     }
@@ -115,6 +123,10 @@ class BinarySearchTreeSet {
 
 class AvlSet {
   public:
+    AvlSet() = default; // ADDED: retain default construction.
+    AvlSet(const AvlSet&) = delete; // ADDED: one node owner.
+    AvlSet& operator=(const AvlSet&) = delete; // ADDED: no aliasing copy.
+
     ~AvlSet() {
         clear(root);
     }

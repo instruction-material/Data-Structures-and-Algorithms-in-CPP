@@ -17,14 +17,17 @@ class QuickSortToolkit {
     }
 
     int partition(int left, int right, int pivotIndex) {
+        // ADDED: TODO: partition the inclusive range around the pivot value.
         (void)left;
         (void)right;
         return pivotIndex;
     }
 
     void sortAll() {
-        // TODO: replace this with quicksort based on medianOfThree and partition.
-        std::sort(values.begin(), values.end());
+        // CHANGED: supplied entry point leaves sorting to the learner tasks.
+        if (!values.empty()) {
+            quickSort(0, static_cast<int>(values.size()) - 1);
+        }
     }
 
     std::string toString() const {
@@ -39,6 +42,13 @@ class QuickSortToolkit {
     }
 
   private:
+    // ADDED: third learner task; the provided vector owns the storage.
+    void quickSort(int left, int right) {
+        // TODO: stop at zero/one item, partition, then sort smaller subranges.
+        (void)left;
+        (void)right;
+    }
+
     std::vector<int> values;
 };
 
@@ -49,5 +59,5 @@ int main() {
     }
 
     toolkit.sortAll();
-    std::cout << "Starter sorted values: " << toolkit.toString() << "\n";
+    std::cout << "Starter values (quicksort pending): " << toolkit.toString() << "\n";
 }
